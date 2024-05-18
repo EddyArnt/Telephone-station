@@ -1,0 +1,32 @@
+-- Создание таблицы "Users"
+CREATE TABLE Users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    role VARCHAR(20) NOT NULL
+);
+
+-- Создание таблицы "Phones"
+CREATE TABLE Phones (
+    phone_id SERIAL PRIMARY KEY,
+    model VARCHAR(50) NOT NULL,
+    manufacturer VARCHAR(50) NOT NULL,
+    serial_number VARCHAR(50) NOT NULL,
+);
+
+-- Создание таблицы "Calls"
+CREATE TABLE Calls (
+    call_id SERIAL PRIMARY KEY,
+    caller_id INTEGER NOT NULL REFERENCES Phones(phone_id),
+    receiver_id INTEGER NOT NULL REFERENCES Phones(phone_id),
+    duration INTERVAL NOT NULL,
+    date_time TIMESTAMP NOT NULL
+);
+
+-- Создание таблицы для связи "Многие ко многим" между пользователями и телефонами
+CREATE TABLE UserPhones (
+    user_id INTEGER REFERENCES Users(user_id),
+    phone_id INTEGER REFERENCES Phones(phone_id),
+    PRIMARY KEY (user_id, phone_id)
+);
